@@ -1,0 +1,39 @@
+.curl-container {
+    background-color: #1e1e1e;
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+  }
+  
+  .text-default {
+    color: #d4d4d4;
+  }
+  
+  .text-url {
+    color: #4caf50;
+  }
+  
+  .text-header {
+    color: #ffc107;
+  }
+  
+  .text-data {
+    color: #2196f3;
+  }
+  
+  .text-command {
+    color: #e91e63;
+    font-weight: bold;
+  }
+  
+  .space {
+    margin-right: 4px;
+  }
+  
+  .error {
+    color: red;
+  }
+  

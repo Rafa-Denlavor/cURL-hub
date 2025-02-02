@@ -1,0 +1,65 @@
+.accordionContainer {
+  width: 1000px;
+  /* max-width: 400px; */
+  font-family: Arial, sans-serif;
+}
+
+.accordionItem {
+  border: 1px solid #ddd;
+  margin: 5px 0;
+  border-radius: 5px;
+  background: #fff;
+  transition: 0.3s;
+}
+
+.accordionItem:hover {
+  background: #f9f9f9;
+}
+
+.accordionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  cursor: pointer;
+  user-select: none;
+  /* background: #f1f1f1; */
+  border-bottom: 1px solid #ddd;
+  /* border: 1px solid rgb(29, 28, 28); */
+}
+
+.headerleftItems input {
+  margin-right: 10px;
+}
+
+.headerleftItems {
+  display: flex;
+  gap: 10px;
+}
+
+.headerRightItems {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .actionIcon:hover {
+    background-color: #ddd;
+    border-radius: 100%;
+  }
+} 
+
+.accordionContent {
+  resize: none;
+  margin: 0;
+  padding: 20px;
+  background: black;
+  color: white;
+  white-space: pre-wrap;  /* Permite a quebra de linha */
+  word-wrap: break-word;  /* Garante que palavras longas quebrem */
+  overflow-wrap: break-word;
+  width: 100%;
+}
+
+.accordionItem[draggable="true"] {
+  cursor: grab;
+}
