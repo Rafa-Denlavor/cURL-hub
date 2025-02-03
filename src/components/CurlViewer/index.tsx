@@ -11,11 +11,9 @@ const CurlViewer = () => {
   // Quebra o comando em partes para destacar
   const parts = command.split(" ");
   return (
-    <pre onChange={(e) => {
-      console.log()
+    <input type="text" onChange={(e) => {
       setCommand(e.target.value);
-      }
-    } className={classes.curlContainer}>
+    }} className={classes.curlContainer}>
       {parts.map((part, index) => {
         let color = classes.textDefault; // Estilo padrão
 
@@ -35,7 +33,7 @@ const CurlViewer = () => {
           </span>
         );
       })}
-    </pre>
+    </input>
   );
 };
 
