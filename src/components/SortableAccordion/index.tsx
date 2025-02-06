@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import classes from "./SortableAccordion.module.css";
 import {
@@ -6,85 +7,105 @@ import {
   IconCaretRightFilled,
   IconEdit,
   IconPlayerPlay,
-} from '@tabler/icons-react';
+  IconTrash,
+} from "@tabler/icons-react";
 import { ClipBoard } from "../Clipboard";
+import { Badge } from "@mantine/core";
 
 interface Item {
-  id: number;
-  title: string;
-  content: string;
-  checked: boolean;
+  id?: number | string;
+  name: string;
+  projectName?: string;
+  command: string;
+  category?: string;
+  environment?: string;
 }
 
-const initialItems: Item[] = [
-  { id: 1, title: "Lista de relatórios", content: "curl 'https://api.github.com/repos/fkhadra/react-toastify/issues?per_page=1' -H 'accept: */*' -H 'accept-language: pt-BR,pt-H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36'", checked: false },
-  { id: 2, title: "Buscar status de validação", content: "Conteúdo do Item 2", checked: false },
-  { id: 3, title: "Ver perfis", content: "Conteúdo do Item 3", checked: false }
-];
-
-export function SortableAccordion() {
-  const [items, setItems] = useState(initialItems);
-  const [openId, setOpenId] = useState<number | null>(null);
+export function SortableAccordion({
+  id = 1,
+  name,
+  command,
+  category,
+  environment,
+}: Item) {
+  const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
-  const toggleAccordion = (id: number) => {
-    setOpenId(openId === id ? null : id);
-  };
-
-  // const handleCheckboxChange = (id: number) => {
-  //   setItems(prev => prev.map(item => item.id === id ? { ...item, checked: !item.checked } : item));
-  // };
-
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, id: number) => {
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     e.dataTransfer.setData("text/plain", id.toString());
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetId: number) => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault(); // Important for allowing drop
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     const draggedId = parseInt(e.dataTransfer.getData("text/plain"), 10);
-    if (draggedId === targetId) return;
+    if (draggedId === id) return;
 
-    const updatedItems = [...items];
-    const draggedIndex = updatedItems.findIndex(item => item.id === draggedId);
-    const targetIndex = updatedItems.findIndex(item => item.id === targetId);
-
-    const [movedItem] = updatedItems.splice(draggedIndex, 1);
-    updatedItems.splice(targetIndex, 0, movedItem);
-
-    setItems(updatedItems);
+    console.log(`Dropped item ${draggedId} onto item ${id}`);
   };
 
   return (
-    <section className={classes.accordionContainer}>
-      {items.map(item => (
-        <div
-          key={item.id}
-          className={classes.accordionItem}
-          draggable
-          onDragStart={(e) => handleDragStart(e, item.id)}
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={(e) => handleDrop(e, item.id)}
-        >
-          <header className={classes.accordionHeader}>
-           <div className={classes.headerleftItems}>
-           {openId ? <IconCaretDownFilled onClick={() => toggleAccordion(item.id)} /> : <IconCaretRightFilled onClick={() => toggleAccordion(item.id)} />}
-            {/* <input
-                type="checkbox"
-                checked={item.checked}
-                onChange={() => handleCheckboxChange(item.id)}
-                onClick={(e) => e.stopPropagation()}
-              /> */}
-              <span contentEditable>{item.title}</span>
-           </div>
-           <aside className={classes.headerRightItems}>
-              <IconPlayerPlay title="Rodar cURL" className={classes.actionIcon} />
-              <ClipBoard text="lala" />
-              <IconEdit title="Editar cURL"  className={classes.actionIcon}onChange={() => setIsEdit(isEdit)} />
-              <IconArchive title="Arquivar cURL" className={classes.actionIcon} />
-           </aside>
-          </header>
-          {openId === item.id && <textarea className={classes.accordionContent} contentEditable>{item.content}</textarea>}
-        </div>
-      ))}
-    </section>
+    <div className={classes.accordionContainer}>
+      <div
+        className={classes.accordionItem}
+        draggable
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
+        <header className={classes.accordionHeader}>
+          <div className={classes.headerleftItems}>
+            {open ? (
+              <IconCaretDownFilled onClick={() => setOpen(!open)} />
+            ) : (
+              <IconCaretRightFilled onClick={() => setOpen(!open)} />
+            )}
+            <Badge color="lime">
+              {category} | {environment}
+            </Badge>
+            <span contentEditable>{name}</span>
+          </div>
+          <aside className={classes.headerRightItems}>
+            <IconPlayerPlay title="Rodar cURL" className={classes.actionIcon} />
+            <ClipBoard text={command} />
+            <IconEdit
+              title="Editar cURL"
+              className={classes.actionIcon}
+              onClick={() => setIsEdit(!isEdit)}
+            />
+            <IconArchive title="Arquivar cURL" className={classes.actionIcon} />
+            <IconTrash
+              title="Deletar cURL"
+              className={classes.actionIcon}
+              onClick={() => {
+                const curlList = JSON.parse(
+                  localStorage.getItem("curlCommands") || "[]"
+                );
+
+                const updatedList = curlList.filter(
+                  (curl: { name: string }) => curl.name !== name
+                );
+
+                localStorage.setItem(
+                  "curlCommands",
+                  JSON.stringify(updatedList)
+                );
+              }}
+            />
+          </aside>
+        </header>
+        {open && (
+          <textarea
+            className={classes.accordionContent}
+            value={command}
+            onChange={() => {
+              /* Handle content change if needed */
+            }}
+          />
+        )}
+      </div>
+    </div>
   );
 }

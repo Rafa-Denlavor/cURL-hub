@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   IconArchive,
   IconHomeCog,
@@ -11,7 +11,7 @@ import Image from 'next/image';
 
 const data = [
   { link: '', label: "Visão geral", icon: IconHomeCog },
-  { link: '', label: "Coleções", icon: IconTrolley },
+  { link: '', label: "Categorias", icon: IconTrolley },
   { link: '', label: 'Arquivados', icon: IconArchive },
   // { link: '', label: 'Security', icon: IconFingerprint },
   // { link: '', label: 'SSH Keys', icon: IconKey },

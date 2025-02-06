@@ -1,0 +1,24 @@
+.curlListWrapper {
+  width: 100%;
+  padding-top: 60px;
+}
+
+.curlHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.newCurlButton {
+  & p {
+    margin-left: 10px;
+  }
+}
+
+.curls {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+}

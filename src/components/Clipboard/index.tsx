@@ -1,3 +1,4 @@
+import React from "react";
 import { IconCopy } from '@tabler/icons-react';
 import { Tooltip } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
