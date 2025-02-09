@@ -19,6 +19,8 @@
       "@/views/*": ["./src/views/*"],
       "@/utils/*": ["./src/utils/*"],
       "@/styles/*": ["./src/styles/*"],
+      "@/helpers/*": ["./src/helpers/*"],
+      "@/config/*": ["./src/config/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

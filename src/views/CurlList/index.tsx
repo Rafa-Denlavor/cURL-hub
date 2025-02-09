@@ -12,6 +12,7 @@ import {
   Center,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { decryptData, encryptData } from "@/helpers/encryption";
 
 export function CurlList() {
   const [curlCreated, setCurlCreated] = useState(false);
@@ -31,11 +32,19 @@ export function CurlList() {
   });
 
   useEffect(() => {
-    const hasCurls = localStorage.getItem("curlCommands");
+    async function getCurls() {
+      const curlsEncrypted = JSON.parse(
+        localStorage.getItem("curlCommands") as string
+      );
 
-    if (hasCurls) {
-      setCurls(JSON.parse(hasCurls));
+      if (curlsEncrypted) {
+        const curls = await decryptData(curlsEncrypted);
+
+        setCurls(curls);
+      }
     }
+
+    getCurls();
   }, [curlCreated]);
 
   return (
@@ -102,21 +111,28 @@ export function CurlList() {
                 type="submit"
                 color="orange"
                 mt="lg"
-                onClick={(event) => {
+                onClick={async (event) => {
                   event.preventDefault();
+                  const curlCurrent = form.getValues();
 
                   if (curls.length === 0) {
                     localStorage.setItem(
                       "curlCommands",
-                      JSON.stringify([form.getValues()])
+                      await encryptData([curlCurrent])
                     );
+                    setCurls([curlCurrent] as any);
                   } else {
                     localStorage.setItem(
                       "curlCommands",
-                      JSON.stringify([...curls, form.getValues()])
+                      await encryptData([...curls, form.getValues()])
+                    );
+                    setCurls(
+                      (preventDefault) =>
+                        [...preventDefault, curlCurrent] as any
                     );
                   }
 
+                  form.reset();
                   setCurlCreated(true);
                   setNoTransitionOpened(false);
                 }}
