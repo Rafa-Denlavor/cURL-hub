@@ -10,7 +10,8 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { ClipBoard } from "../Clipboard";
-import { Badge } from "@mantine/core";
+import { Badge, Paper, Text } from "@mantine/core";
+import { useCollapse } from "./useCollapse";
 
 interface Item {
   id?: number | string;
@@ -27,6 +28,7 @@ export function SortableAccordion({
   projectName,
   environment,
 }: Item) {
+  const { runCurl, error, response } = useCollapse();
   const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -46,7 +48,9 @@ export function SortableAccordion({
                 {environment}
               </Badge>
             </div>
-            <h2 contentEditable>{name}</h2>
+            <h2 contentEditable style={{ padding: "2px 5px" }}>
+              {name}
+            </h2>
           </div>
           <aside
             className={classes.headerRightItems}
@@ -55,7 +59,8 @@ export function SortableAccordion({
             <IconPlayerPlay
               title="Rodar cURL"
               className={classes.actionIcon}
-              color="var(--mantine-color-gray-6)"
+              color="var(--mantine-color-gray-6)  "
+              onClick={() => runCurl(command)}
             />
             <ClipBoard text={command} />
             <IconEdit
@@ -97,6 +102,20 @@ export function SortableAccordion({
         </header>
         {open && (
           <div className={classes.accordionContentWrapper}>
+            {(response || error) && (
+              <Paper
+                shadow="xs"
+                p="md"
+                mb="sm"
+                style={{
+                  backgroundColor: response ? "#70d470" : "#f56b6b",
+                  color: "white",
+                }}
+              >
+                <Text>Resposta:</Text>
+                <Text>{response ? response : error}</Text>
+              </Paper>
+            )}
             <textarea className={classes.accordionContent} value={command} />
           </div>
         )}

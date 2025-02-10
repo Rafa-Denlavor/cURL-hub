@@ -54,9 +54,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(400).json({ error: "URL inválida ou proibida!" });
   }
 
-  if (command.length > 500) {
-    return res.status(400).json({ error: "Comando muito longo!" });
-  }
+  // if (command.length > 500) {
+  //   return res.status(400).json({ error: "Comando muito longo!" });
+  // }
 
   exec(command, (error, stdout, stderr) => {
     if (error) {

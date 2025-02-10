@@ -28,7 +28,14 @@ export function CurlList() {
       command: "",
       archived: false,
     },
-    validate: {},
+    validate: {
+      command: (value) =>
+        /^curl\s+(?:-[A-Za-z]+\s+|\-\-[A-Za-z\-]+\s+)*(?:"[^"]*"|'[^']*'|https?:\/\/[^\s]+)(?:\s+-[A-Za-z]+\s+|\s+\-\-[A-Za-z\-]+\s+)*(?:"[^"]*"|'[^']*'|\S+)*$/.test(
+          value
+        )
+          ? null
+          : "Comando inválido!",
+    },
   });
 
   useEffect(() => {
@@ -60,7 +67,7 @@ export function CurlList() {
           centered
           closeOnClickOutside={false}
         >
-          <form>
+          <form onSubmit={form.onSubmit((values) => console.log(values))}>
             <Fieldset variant="filled">
               <TextInput
                 label="Nome"
@@ -104,6 +111,7 @@ export function CurlList() {
                 maxRows={5}
                 key={form.key("command")}
                 {...form.getInputProps("command")}
+                error={form?.errors?.command}
               ></Textarea>
             </Fieldset>
             <Center>
