@@ -18,7 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding: 20px;
   cursor: pointer;
   user-select: none;
   /* background: #f1f1f1; */
@@ -26,14 +26,28 @@
   /* border: 1px solid rgb(29, 28, 28); */
 }
 
-.headerleftItems input {
+.headerLeftItems input {
   margin-right: 10px;
 }
 
-.headerleftItems {
+.headerLeftItems {
+  width: 100%;
   display: flex;
+  flex-direction: column;
   gap: 10px;
-  align-items: center;
+  align-items: baseline;
+
+  & .badges {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  & h2 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
 }
 
 .headerRightItems {
@@ -45,18 +59,22 @@
     background-color: #ddd;
     border-radius: 100%;
   }
-} 
+}
+
+.accordionContentWrapper {
+  padding: 20px 20px 13px 20px;
+}
 
 .accordionContent {
   resize: none;
-  margin: 0;
   padding: 20px;
   background: black;
   color: white;
-  white-space: pre-wrap;  /* Permite a quebra de linha */
-  word-wrap: break-word;  /* Garante que palavras longas quebrem */
+  white-space: pre-wrap; /* Permite a quebra de linha */
+  word-wrap: break-word; /* Garante que palavras longas quebrem */
   overflow-wrap: break-word;
   width: 100%;
+  border-radius: 5px;
 }
 
 .accordionItem[draggable="true"] {

@@ -3,8 +3,8 @@ import { useState } from "react";
 import classes from "./SortableAccordion.module.css";
 import {
   IconArchive,
-  IconCaretDownFilled,
-  IconCaretRightFilled,
+  IconArrowBadgeDownFilled,
+  IconArrowBadgeRight,
   IconEdit,
   IconPlayerPlay,
   IconTrash,
@@ -22,88 +22,83 @@ interface Item {
 }
 
 export function SortableAccordion({
-  id = 1,
   name,
   command,
-  category,
+  projectName,
   environment,
 }: Item) {
   const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
-    e.dataTransfer.setData("text/plain", id.toString());
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault(); // Important for allowing drop
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    const draggedId = parseInt(e.dataTransfer.getData("text/plain"), 10);
-    if (draggedId === id) return;
-
-    console.log(`Dropped item ${draggedId} onto item ${id}`);
-  };
-
   return (
     <div className={classes.accordionContainer}>
-      <div
-        className={classes.accordionItem}
-        draggable
-        onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-      >
+      <div className={classes.accordionItem}>
         <header className={classes.accordionHeader}>
-          <div className={classes.headerleftItems}>
-            {open ? (
-              <IconCaretDownFilled onClick={() => setOpen(!open)} />
-            ) : (
-              <IconCaretRightFilled onClick={() => setOpen(!open)} />
-            )}
-            <Badge color="lime">
-              {category} | {environment}
-            </Badge>
-            <span contentEditable>{name}</span>
+          <div
+            className={classes.headerLeftItems}
+            onClick={() => setOpen(!open)}
+          >
+            <div className={classes.badges}>
+              <Badge color="teal" variant="dot">
+                {projectName}
+              </Badge>
+              <Badge color="red" variant="dot">
+                {environment}
+              </Badge>
+            </div>
+            <h2 contentEditable>{name}</h2>
           </div>
-          <aside className={classes.headerRightItems}>
-            <IconPlayerPlay title="Rodar cURL" className={classes.actionIcon} />
+          <aside
+            className={classes.headerRightItems}
+            onClick={() => setOpen(open)}
+          >
+            <IconPlayerPlay
+              title="Rodar cURL"
+              className={classes.actionIcon}
+              color="var(--mantine-color-gray-6)"
+            />
             <ClipBoard text={command} />
             <IconEdit
               title="Editar cURL"
               className={classes.actionIcon}
               onClick={() => setIsEdit(!isEdit)}
+              color="var(--mantine-color-gray-6)"
             />
-            <IconArchive title="Arquivar cURL" className={classes.actionIcon} />
+            <IconArchive
+              title="Arquivar cURL"
+              className={classes.actionIcon}
+              color="var(--mantine-color-gray-6)"
+            />
             <IconTrash
               title="Deletar cURL"
               className={classes.actionIcon}
-              onClick={() => {
-                const curlList = JSON.parse(
-                  localStorage.getItem("curlCommands") || "[]"
-                );
+              color="var(--mantine-color-gray-6)"
+              // onClick={() => {
+              //   const curlList = JSON.parse(
+              //     localStorage.getItem("curlCommands") || "[]"
+              //   );
 
-                const updatedList = curlList.filter(
-                  (curl: { name: string }) => curl.name !== name
-                );
+              //   const updatedList = curlList.filter(
+              //     (curl: { name: string }) => curl.name !== name
+              //   );
 
-                localStorage.setItem(
-                  "curlCommands",
-                  JSON.stringify(updatedList)
-                );
-              }}
+              //   localStorage.setItem(
+              //     "curlCommands",
+              //     JSON.stringify(updatedList)
+              //   );
+              // }}
             />
+            {open ? (
+              <IconArrowBadgeDownFilled onClick={() => setOpen(!open)} />
+            ) : (
+              <IconArrowBadgeRight onClick={() => setOpen(!open)} />
+            )}
           </aside>
         </header>
         {open && (
-          <textarea
-            className={classes.accordionContent}
-            value={command}
-            onChange={() => {
-              /* Handle content change if needed */
-            }}
-          />
+          <div className={classes.accordionContentWrapper}>
+            <textarea className={classes.accordionContent} value={command} />
+          </div>
         )}
       </div>
     </div>

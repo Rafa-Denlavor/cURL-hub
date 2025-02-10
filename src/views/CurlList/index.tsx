@@ -50,7 +50,7 @@ export function CurlList() {
   return (
     <main className={classes.curlListWrapper}>
       <header className={classes.curlHeader}>
-        <h1>Últimos cURL&apos;s</h1>
+        <h1>Comandos cURL</h1>
         <Modal
           opened={noTransitionOpened}
           onClose={() => setNoTransitionOpened(false)}
@@ -109,7 +109,7 @@ export function CurlList() {
             <Center>
               <Button
                 type="submit"
-                color="orange"
+                color="black"
                 mt="lg"
                 onClick={async (event) => {
                   event.preventDefault();
@@ -144,7 +144,7 @@ export function CurlList() {
         </Modal>
 
         <Button
-          color="orange"
+          color="black"
           className={classes.newCurlButton}
           onClick={() => setNoTransitionOpened(true)}
         >
