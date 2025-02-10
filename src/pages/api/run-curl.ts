@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { exec } from "child_process";
+  import { exec } from "child_process";
 import { parse } from "url";
 
 const BLOCKED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"];
@@ -33,13 +33,13 @@ const sanitizeCommand = (command: string): string => {
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Método não permitido!" });
+    return res.status(405).json({ message: "Método não permitido!" });
   }
 
   let { command } = req.body;
 
   if (!command || typeof command !== "string") {
-    return res.status(400).json({ error: "Comando inválido!" });
+    return res.status(400).json({ message: "Comando inválido!" });
   }
 
   command = sanitizeCommand(command);
@@ -47,15 +47,15 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!command.startsWith("curl ")) {
     return res
       .status(400)
-      .json({ error: "Apenas comandos cURL são permitidos!" });
+      .json({ message: "Apenas comandos cURL são permitidos!" });
   }
 
   if (!isValidUrl(command)) {
-    return res.status(400).json({ error: "URL inválida ou proibida!" });
+    return res.status(400).json({ message: "URL inválida ou proibida!" });
   }
 
   // if (command.length > 500) {
-  //   return res.status(400).json({ error: "Comando muito longo!" });
+  //   return res.status(400).json({ message: "Comando muito longo!" });
   // }
 
   exec(command, (error, stdout, stderr) => {
