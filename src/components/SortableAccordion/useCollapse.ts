@@ -14,7 +14,7 @@ export function useCollapse() {
 
       const res = await axios.post(
         "https://curl-hub.vercel.app/api/run-curl",
-         // "http://localhost:3000/api/run-curl",
+        //  "http://localhost:3000/api/run-curl",
         payload,
         {
           headers: {
@@ -24,7 +24,7 @@ export function useCollapse() {
       );
 
       setResponse(JSON.stringify(res.data, null, 2));
-    } catch (err) {
+    } catch (err : any) {
       setError(err?.message ?? "Erro ao fazer a requisição");
     }
   };

@@ -52,15 +52,16 @@ export function SortableAccordion({
               {name}
             </h2>
           </div>
-          <aside
-            className={classes.headerRightItems}
-            onClick={() => setOpen(open)}
-          >
+          <aside className={classes.headerRightItems}>
             <IconPlayerPlay
               title="Rodar cURL"
               className={classes.actionIcon}
               color="var(--mantine-color-gray-6)  "
-              onClick={() => runCurl(command)}
+              onClick={() => {
+                setOpen(true);
+
+                runCurl(command);
+              }}
             />
             <ClipBoard text={command} />
             <IconEdit
@@ -94,9 +95,12 @@ export function SortableAccordion({
               // }}
             />
             {open ? (
-              <IconArrowBadgeDownFilled onClick={() => setOpen(!open)} />
+              <IconArrowBadgeDownFilled
+                onClick={() => setOpen(!open)}
+                size={30}
+              />
             ) : (
-              <IconArrowBadgeRight onClick={() => setOpen(!open)} />
+              <IconArrowBadgeRight onClick={() => setOpen(!open)} size={30} />
             )}
           </aside>
         </header>

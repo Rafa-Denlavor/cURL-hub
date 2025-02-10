@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-  import { exec } from "child_process";
+import { exec } from "child_process";
 import { parse } from "url";
 
 const BLOCKED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"];
@@ -60,7 +60,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   exec(command, (error, stdout, stderr) => {
     if (error) {
-      return res.status(500).json({ error: stderr });
+      return res.status(500).json({ message: stderr, details: error?.message });
     }
     res.status(200).json({ output: stdout });
   });
